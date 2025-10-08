@@ -6,8 +6,4 @@ const userSchema = new Schema({
   password: { type: String },
 });
 
-const User = mongoose.model("user", userSchema);
-
-User.create({
-  age: 243,
-});
+export const User = mongoose.model("User", userSchema);
