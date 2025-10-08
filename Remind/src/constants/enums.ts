@@ -1,0 +1,7 @@
+export enum HttpStatus {
+  OK = 200,
+  LENGHT_REQUIRED = 411,
+  FORBIDDEN = 403,
+  INTERNAL_SERVER_ERROR = 500,
+  NOT_FOUND = 404,
+}
