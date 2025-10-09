@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const authSchema = z.object({
-  username: z.string().min(3).max(10),
+  username: z.string().min(3).max(20),
   password: z
     .string()
     .min(8)
@@ -11,3 +11,6 @@ export const authSchema = z.object({
       "Password  should have atleast one uppercase, one lowercase, one special character, one number"
     ),
 });
+
+
+export type authBody = z.infer<typeof authSchema>
