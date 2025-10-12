@@ -24,10 +24,12 @@ export const Validate = (schema: ZodObject, source: source = "body") => {
       console.log(`Validation Success ✅ source:${source}`);
       next();
     } catch (error) {
-      next( new AppError(
-        `Something went wrong ${error}`,
-        HttpStatus.INTERNAL_SERVER_ERROR
-      ))
+      return next(
+        new AppError(
+          `Something went wrong ${error}`,
+          HttpStatus.INTERNAL_SERVER_ERROR
+        )
+      );
     }
   };
 };
