@@ -1,0 +1,6 @@
+node_modules
+dist
+package-lock.json
+looklater.txt
+server/tsconfig.tsbuildinfo
+.env
