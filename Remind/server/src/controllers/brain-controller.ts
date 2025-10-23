@@ -1,13 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import { Link } from "../models/link-modal.js";
 import { v4 as uuid } from "uuid";
-
 import { AppError } from "../utils/AppError.js";
 import { HttpStatus } from "../constants/enums.js";
 import type { linkBody } from "../schema/general-schemas.js";
 import { Content } from "../models/content-modal.js";
-import { User } from "../models/user-model.js";
-
+import type { authBody } from "../schema/auth-schema.js";
 export const generateLink = async (
   req: Request,
   res: Response,
@@ -63,7 +61,7 @@ export const delLink = async (
     }
     res.json({
       status: true,
-      message: "Your content has been stopped from begin shared",
+      message: "Your content has been stopped from being shared",
     });
     return;
   } else {
@@ -77,22 +75,24 @@ export const useLink = async (
   next: NextFunction
 ) => {
   const { hash } = req.validatedParams as linkBody;
+
   console.log(hash);
   // extract hash from the whole link
-  const shareId = await Link.findOne({ hash });
-  if (!shareId)
+  const shareId = await Link.findOne({ hash }).populate("userId");
+  if (!shareId) {
     return next(new AppError("content not found ", HttpStatus.NOT_FOUND));
+  }
+
+  console.log(shareId);
+
   const sharedContent = await Content.find({ userId: shareId.userId }).select(
     "-_id -__v -userId"
   );
 
-  const user = await User.findOne({ _id: shareId.userId });
-
-  // convert into populate approach later
   res.json({
     status: true,
     message: "content found",
-    username: user?.username,
+    username: (shareId?.userId as authBody).username,
     content: sharedContent,
   });
 };
